@@ -61,10 +61,9 @@
             letter-spacing: -0.5px;
             line-height: 1.2;
         }
-    /* Emoji posicionado absolutamente, más cerca del texto (right: 8px) */
         .emoji-lateral {
             position: absolute;
-            right: 565px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 2.2rem;
@@ -72,21 +71,16 @@
             pointer-events: none;
             white-space: nowrap;
         }
-        /* En móviles muy pequeños, el emoji pasa a estar debajo */
         @media (max-width: 480px) {
             .titulo-wrapper {
                 flex-direction: column;
                 padding: 0;
             }
             .emoji-lateral {
-           position: absolute;
-            right: 13px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2.2rem;
-            color: initial;
-            pointer-events: none;
-            white-space: nowrap;
+                position: static;
+                transform: none;
+                margin-top: 6px;
+                pointer-events: auto;
             }
         }
         .slogan {
@@ -105,7 +99,7 @@
             padding: 20px 16px;
         }
 
-        /* Botón flotante WhatsApp */
+        /* Botón flotante WhatsApp (ahora sin href directo) */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -122,6 +116,8 @@
             color: white;
             font-weight: 600;
             font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
         }
         .whatsapp-float img {
             width: 24px;
@@ -130,6 +126,81 @@
         @media (max-width: 480px) {
             .whatsapp-float span { font-size: 0.7rem; }
             .whatsapp-float { padding: 8px 14px; }
+        }
+
+        /* Modal de opciones de WhatsApp */
+        .modal-wa-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.2s, opacity 0.2s;
+        }
+        .modal-wa-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-wa-card {
+            background: white;
+            width: 90%;
+            max-width: 380px;
+            border-radius: 32px;
+            padding: 24px 20px 28px;
+            position: relative;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .modal-wa-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #8B1E1E;
+        }
+        .modal-wa-card p {
+            font-size: 0.8rem;
+            color: #A66F6F;
+            margin-bottom: 20px;
+        }
+        .wa-opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .wa-boton {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .wa-boton:hover {
+            background: #20b859;
+            transform: scale(1.02);
+        }
+        .cerrar-wa {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #94A3B8;
         }
 
         /* Botón principal */
@@ -153,7 +224,7 @@
         }
         .btn-abrir-asistente:active { transform: scale(0.98); }
 
-        /* MURO */
+        /* MURO (sin cambios) */
         .muro h2 {
             font-size: 1.2rem;
             font-weight: 700;
@@ -208,8 +279,6 @@
             padding: 5px 12px;
             border-radius: 30px;
         }
-
-        /* ===== RESPUESTA CON BOTÓN CERRAR FIJO Y SCROLL ESTILIZADO ===== */
         .respuesta-container {
             display: block;
             max-height: 0;
@@ -223,7 +292,6 @@
             opacity: 1;
             overflow-y: auto;
         }
-        /* Estilo de la barra de scroll (más sutil y corta) */
         .respuesta-container.visible::-webkit-scrollbar {
             width: 4px;
         }
@@ -235,15 +303,10 @@
             background: #CCC;
             border-radius: 10px;
         }
-        .respuesta-container.visible::-webkit-scrollbar-thumb:hover {
-            background: #AAA;
-        }
-        /* Para Firefox */
         .respuesta-container.visible {
             scrollbar-width: thin;
             scrollbar-color: #CCC #F1F1F1;
         }
-
         .respuesta {
             background: #FEF6F6;
             padding: 14px;
@@ -251,7 +314,6 @@
             border-left: 4px solid #D31224;
             position: relative;
         }
-        /* Botón cerrar (X) fijo dentro del área de respuesta */
         .cerrar-respuesta {
             position: sticky;
             top: 0;
@@ -276,7 +338,6 @@
             background: #F0F0F0;
             color: #D31224;
         }
-        /* Aseguramos que el contenido de la respuesta no quede debajo del botón */
         .respuesta-texto {
             clear: both;
             font-size: 0.85rem;
@@ -297,7 +358,7 @@
             color: #A66F6F;
         }
 
-        /* ASISTENTE MODAL (corrección de inputs desbordados) */
+        /* ASISTENTE MODAL (sin cambios) */
         .asistente-overlay {
             position: fixed;
             top: 0;
@@ -424,12 +485,26 @@
     </div>
 </div>
 
-<a href="https://wa.me/+595982680484?text=Hola%2C%20tengo%20una%20pregunta%20para%20FPT" class="whatsapp-float" target="_blank">
+<!-- Botón flotante de WhatsApp (modificado para abrir modal) -->
+<div class="whatsapp-float" id="waFloat">
     <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
     <span>¿Preferís hablarnos directamente?</span>
-</a>
+</div>
 
-<!-- ASISTENTE MODAL (código funcional sin cambios) -->
+<!-- Modal de opciones de WhatsApp -->
+<div id="modalWa" class="modal-wa-overlay">
+    <div class="modal-wa-card">
+        <span class="cerrar-wa" id="cerrarWa">&times;</span>
+        <h3>📱 Conversar con FPT</h3>
+        <p>Elegí con quién querés hablar</p>
+        <div id="listaContactos" class="wa-opciones">
+            <!-- Los botones se cargarán dinámicamente -->
+            <div class="loading">Cargando contactos...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ASISTENTE MODAL (idéntico) -->
 <div id="asistenteModal" class="asistente-overlay">
     <div class="asistente-card">
         <span class="close-asistente" id="closeAsistente">&times;</span>
@@ -496,9 +571,10 @@
 </div>
 
 <script>
-    // ========== CONFIGURACIÓN (¡cambia la URL!) ==========
+    // ========== CONFIGURACIÓN ==========
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIuYDBkJIMEKJRstaeeDTtb8iQpxgcl1HmtoBISAwPkxnwyAr_LPPETGaxbi6de5iU/exec";
 
+    // ========== FUNCIONES COMUNES ==========
     function formatText(text) {
         if (!text) return "";
         text = text.replace(/\. /g, '.<br><br>');
@@ -507,7 +583,133 @@
         return text;
     }
 
-    // ========== ASISTENTE (mismo de siempre) ==========
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ========== CARGA DE DATOS (preguntas + teléfonos) ==========
+    let telefonosData = [];
+
+    async function cargarDatos() {
+        try {
+            const res = await fetch(SCRIPT_URL);
+            const data = await res.json();
+            // data contiene { preguntas: [], telefonos: [] }
+            return data;
+        } catch(e) {
+            console.error("Error cargando datos:", e);
+            return { preguntas: [], telefonos: [] };
+        }
+    }
+
+    // ========== MURO DE PREGUNTAS ==========
+    async function cargarMuro() {
+        const container = document.getElementById('muroLista');
+        container.innerHTML = '<div class="loading">Cargando preguntas...</div>';
+        const data = await cargarDatos();
+        const preguntas = data.preguntas || [];
+        if (!preguntas.length) {
+            container.innerHTML = '<p style="text-align:center; padding:32px;">✨ Todavía no hay preguntas respondidas. ¡Sé el primero en preguntar!</p>';
+            return;
+        }
+        let html = '';
+        preguntas.forEach((p, idx) => {
+            const preguntaFormateada = formatText(escapeHtml(p.pregunta));
+            const respuestaFormateada = formatText(escapeHtml(p.respuesta));
+            html += `
+                <div class="pregunta-item" id="pregunta-${idx}">
+                    <button class="pregunta-boton" onclick="toggleRespuesta(${idx})">
+                        <span class="pregunta-icono">❓</span>
+                        <div class="pregunta-texto">${preguntaFormateada}</div>
+                    </button>
+                    <div class="pregunta-meta">
+                        ${p.destinatario ? `Dirigida a: ${escapeHtml(p.destinatario)} · ` : ''}
+                        ${p.nombrePregunto ? `Pregunta de: ${escapeHtml(p.nombrePregunto)} · ` : ''}
+                        ${p.fecha ? new Date(p.fecha).toLocaleDateString() : ''}
+                    </div>
+                    <button class="btn-ver-respuesta" id="btnVer-${idx}" onclick="toggleRespuesta(${idx})">📖 Ver respuesta</button>
+                    <div id="respuesta-${idx}" class="respuesta-container">
+                        <div class="respuesta">
+                            <button class="cerrar-respuesta" onclick="cerrarRespuesta(${idx})">✕</button>
+                            <div class="respuesta-texto">💬 ${respuestaFormateada}</div>
+                            <div class="respuesta-autor">— ${escapeHtml(p.respondio)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // Funciones de toggle de respuestas
+    function toggleRespuesta(idx, forceClose = false) {
+        const respuestaDiv = document.getElementById(`respuesta-${idx}`);
+        const btnVer = document.getElementById(`btnVer-${idx}`);
+        if (!respuestaDiv) return;
+        const isVisible = respuestaDiv.classList.contains('visible');
+        if (forceClose) {
+            respuestaDiv.classList.remove('visible');
+            if (btnVer) btnVer.style.display = 'inline-block';
+            return;
+        }
+        if (isVisible) {
+            respuestaDiv.classList.remove('visible');
+            if (btnVer) btnVer.style.display = 'inline-block';
+        } else {
+            respuestaDiv.classList.add('visible');
+            if (btnVer) btnVer.style.display = 'none';
+        }
+    }
+
+    function cerrarRespuesta(idx) {
+        toggleRespuesta(idx, true);
+    }
+
+    // ========== MODAL DE WHATSAPP ==========
+    const waFloat = document.getElementById('waFloat');
+    const modalWa = document.getElementById('modalWa');
+    const cerrarWa = document.getElementById('cerrarWa');
+    const listaContactos = document.getElementById('listaContactos');
+
+    async function cargarContactosWhatsApp() {
+        listaContactos.innerHTML = '<div class="loading">Cargando contactos...</div>';
+        const data = await cargarDatos();
+        const contactos = data.telefonos || [];
+        if (contactos.length === 0) {
+            listaContactos.innerHTML = '<p style="color:#999">No hay contactos disponibles.</p>';
+            return;
+        }
+        let html = '';
+        contactos.forEach(cont => {
+            const url = `https://wa.me/${cont.numero}?text=${encodeURIComponent(cont.mensaje)}`;
+            html += `
+                <a href="${url}" target="_blank" class="wa-boton">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" width="20" height="20" style="filter: invert(1);" alt="WA">
+                    Hablar con ${escapeHtml(cont.nombre)}
+                </a>
+            `;
+        });
+        listaContactos.innerHTML = html;
+    }
+
+    waFloat.addEventListener('click', () => {
+        modalWa.classList.add('active');
+        cargarContactosWhatsApp();
+    });
+    cerrarWa.addEventListener('click', () => {
+        modalWa.classList.remove('active');
+    });
+    modalWa.addEventListener('click', (e) => {
+        if (e.target === modalWa) modalWa.classList.remove('active');
+    });
+
+    // ========== ASISTENTE DE PREGUNTAS ==========
     const modal = document.getElementById('asistenteModal');
     const abrirBtn = document.getElementById('abrirAsistente');
     const cerrarBtn = document.getElementById('closeAsistente');
@@ -616,82 +818,7 @@
     cerrarBtn.onclick = () => { modal.classList.remove('active'); reiniciarAsistente(); };
     modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
 
-    // ========== MURO ==========
-    function toggleRespuesta(idx, forceClose = false) {
-        const respuestaDiv = document.getElementById(`respuesta-${idx}`);
-        const btnVer = document.getElementById(`btnVer-${idx}`);
-        if (!respuestaDiv) return;
-        const isVisible = respuestaDiv.classList.contains('visible');
-        if (forceClose) {
-            respuestaDiv.classList.remove('visible');
-            if (btnVer) btnVer.style.display = 'inline-block';
-            return;
-        }
-        if (isVisible) {
-            respuestaDiv.classList.remove('visible');
-            if (btnVer) btnVer.style.display = 'inline-block';
-        } else {
-            respuestaDiv.classList.add('visible');
-            if (btnVer) btnVer.style.display = 'none';
-        }
-    }
-
-    function cerrarRespuesta(idx) {
-        toggleRespuesta(idx, true);
-    }
-
-    async function cargarMuro() {
-        const container = document.getElementById('muroLista');
-        container.innerHTML = '<div class="loading">Cargando preguntas...</div>';
-        try {
-            const res = await fetch(SCRIPT_URL);
-            const preguntas = await res.json();
-            if (!preguntas.length) {
-                container.innerHTML = '<p style="text-align:center; padding:32px;">✨ Todavía no hay preguntas respondidas. ¡Sé el primero en preguntar!</p>';
-                return;
-            }
-            let html = '';
-            preguntas.forEach((p, idx) => {
-                const preguntaFormateada = formatText(escapeHtml(p.pregunta));
-                const respuestaFormateada = formatText(escapeHtml(p.respuesta));
-                html += `
-                    <div class="pregunta-item" id="pregunta-${idx}">
-                        <button class="pregunta-boton" onclick="toggleRespuesta(${idx})">
-                            <span class="pregunta-icono">❓</span>
-                            <div class="pregunta-texto">${preguntaFormateada}</div>
-                        </button>
-                        <div class="pregunta-meta">
-                            ${p.destinatario ? `Dirigida a: ${escapeHtml(p.destinatario)} · ` : ''}
-                            ${p.nombrePregunto ? `Pregunta de: ${escapeHtml(p.nombrePregunto)} · ` : ''}
-                            ${p.fecha ? new Date(p.fecha).toLocaleDateString() : ''}
-                        </div>
-                        <button class="btn-ver-respuesta" id="btnVer-${idx}" onclick="toggleRespuesta(${idx})">📖 Ver respuesta</button>
-                        <div id="respuesta-${idx}" class="respuesta-container">
-                            <div class="respuesta">
-                                <button class="cerrar-respuesta" onclick="cerrarRespuesta(${idx})">✕</button>
-                                <div class="respuesta-texto">💬 ${respuestaFormateada}</div>
-                                <div class="respuesta-autor">— ${escapeHtml(p.respondio)}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        } catch(e) {
-            container.innerHTML = '<p class="loading">Error al cargar. Intentalo de nuevo.</p>';
-        }
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
+    // Inicializar todo
     window.toggleRespuesta = toggleRespuesta;
     window.cerrarRespuesta = cerrarRespuesta;
     cargarMuro();
