@@ -63,7 +63,7 @@
         }
         .emoji-lateral {
             position: absolute;
-            right: 8px;
+            right: 565px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 2.2rem;
@@ -77,10 +77,14 @@
                 padding: 0;
             }
             .emoji-lateral {
-                position: static;
-                transform: none;
-                margin-top: 6px;
-                pointer-events: auto;
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.2rem;
+            color: initial;
+            pointer-events: none;
+            white-space: nowrap;
             }
         }
         .slogan {
@@ -99,7 +103,7 @@
             padding: 20px 16px;
         }
 
-        /* Botón flotante WhatsApp (sin href directo, ahora un div) */
+        /* Botón flotante WhatsApp (derecha) */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -128,7 +132,34 @@
             .whatsapp-float { padding: 8px 14px; }
         }
 
-        /* Modal de opciones de WhatsApp */
+        /* Nuevo botón flotante Instagram (izquierda) */
+        .instagram-float {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #D31224; /* rojo FPT */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .instagram-float:hover {
+            transform: scale(1.05);
+            background-color: #b80f1f;
+        }
+        .instagram-float img {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Modal de opciones de WhatsApp (sin cambios) */
         .modal-wa-overlay {
             position: fixed;
             top: 0;
@@ -225,7 +256,7 @@
         }
         .btn-abrir-asistente:active { transform: scale(0.98); }
 
-        /* MURO */
+        /* MURO (sin cambios) */
         .muro h2 {
             font-size: 1.2rem;
             font-weight: 700;
@@ -359,7 +390,7 @@
             color: #A66F6F;
         }
 
-        /* ASISTENTE MODAL */
+        /* ASISTENTE MODAL (sin cambios) */
         .asistente-overlay {
             position: fixed;
             top: 0;
@@ -486,11 +517,16 @@
     </div>
 </div>
 
-<!-- Botón flotante de WhatsApp (modificado para abrir modal) -->
+<!-- Botón flotante de WhatsApp (derecha) -->
 <div class="whatsapp-float" id="waFloat">
     <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
     <span>¿Preferís hablarnos directamente?</span>
 </div>
+
+<!-- Botón flotante de Instagram (izquierda) -->
+<a href="https://www.instagram.com/fiunaparatodos" class="instagram-float" target="_blank" rel="noopener noreferrer">
+    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+</a>
 
 <!-- Modal de opciones de WhatsApp -->
 <div id="modalWa" class="modal-wa-overlay">
@@ -672,7 +708,7 @@
         toggleRespuesta(idx, true);
     }
 
-    // ========== MODAL DE WHATSAPP (USA TELÉFONOS GLOBALES, SIN NUEVO FETCH) ==========
+    // ========== MODAL DE WHATSAPP ==========
     function mostrarContactosWhatsApp() {
         const lista = document.getElementById('listaContactos');
         if (!lista) return;
