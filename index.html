@@ -99,7 +99,7 @@
             padding: 20px 16px;
         }
 
-        /* Botón flotante WhatsApp (ahora sin href directo) */
+        /* Botón flotante WhatsApp (sin href directo, ahora un div) */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -189,6 +189,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-decoration: none;
         }
         .wa-boton:hover {
             background: #20b859;
@@ -224,7 +225,7 @@
         }
         .btn-abrir-asistente:active { transform: scale(0.98); }
 
-        /* MURO (sin cambios) */
+        /* MURO */
         .muro h2 {
             font-size: 1.2rem;
             font-weight: 700;
@@ -358,7 +359,7 @@
             color: #A66F6F;
         }
 
-        /* ASISTENTE MODAL (sin cambios) */
+        /* ASISTENTE MODAL */
         .asistente-overlay {
             position: fixed;
             top: 0;
@@ -498,13 +499,12 @@
         <h3>📱 Conversar con FPT</h3>
         <p>Elegí con quién querés hablar</p>
         <div id="listaContactos" class="wa-opciones">
-            <!-- Los botones se cargarán dinámicamente -->
             <div class="loading">Cargando contactos...</div>
         </div>
     </div>
 </div>
 
-<!-- ASISTENTE MODAL (idéntico) -->
+<!-- ASISTENTE MODAL -->
 <div id="asistenteModal" class="asistente-overlay">
     <div class="asistente-card">
         <span class="close-asistente" id="closeAsistente">&times;</span>
@@ -574,6 +574,9 @@
     // ========== CONFIGURACIÓN ==========
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIuYDBkJIMEKJRstaeeDTtb8iQpxgcl1HmtoBISAwPkxnwyAr_LPPETGaxbi6de5iU/exec";
 
+    // Variables globales para cachear teléfonos
+    let telefonosGlobal = [];
+
     // ========== FUNCIONES COMUNES ==========
     function formatText(text) {
         if (!text) return "";
@@ -594,13 +597,11 @@
     }
 
     // ========== CARGA DE DATOS (preguntas + teléfonos) ==========
-    let telefonosData = [];
-
     async function cargarDatos() {
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
-            // data contiene { preguntas: [], telefonos: [] }
+            telefonosGlobal = data.telefonos || [];
             return data;
         } catch(e) {
             console.error("Error cargando datos:", e);
@@ -671,22 +672,16 @@
         toggleRespuesta(idx, true);
     }
 
-    // ========== MODAL DE WHATSAPP ==========
-    const waFloat = document.getElementById('waFloat');
-    const modalWa = document.getElementById('modalWa');
-    const cerrarWa = document.getElementById('cerrarWa');
-    const listaContactos = document.getElementById('listaContactos');
-
-    async function cargarContactosWhatsApp() {
-        listaContactos.innerHTML = '<div class="loading">Cargando contactos...</div>';
-        const data = await cargarDatos();
-        const contactos = data.telefonos || [];
-        if (contactos.length === 0) {
-            listaContactos.innerHTML = '<p style="color:#999">No hay contactos disponibles.</p>';
+    // ========== MODAL DE WHATSAPP (USA TELÉFONOS GLOBALES, SIN NUEVO FETCH) ==========
+    function mostrarContactosWhatsApp() {
+        const lista = document.getElementById('listaContactos');
+        if (!lista) return;
+        if (!telefonosGlobal.length) {
+            lista.innerHTML = '<p style="color:#999">No hay contactos disponibles.</p>';
             return;
         }
         let html = '';
-        contactos.forEach(cont => {
+        telefonosGlobal.forEach(cont => {
             const url = `https://wa.me/${cont.numero}?text=${encodeURIComponent(cont.mensaje)}`;
             html += `
                 <a href="${url}" target="_blank" class="wa-boton">
@@ -695,12 +690,17 @@
                 </a>
             `;
         });
-        listaContactos.innerHTML = html;
+        lista.innerHTML = html;
     }
+
+    // Eventos del modal WhatsApp
+    const waFloat = document.getElementById('waFloat');
+    const modalWa = document.getElementById('modalWa');
+    const cerrarWa = document.getElementById('cerrarWa');
 
     waFloat.addEventListener('click', () => {
         modalWa.classList.add('active');
-        cargarContactosWhatsApp();
+        mostrarContactosWhatsApp();
     });
     cerrarWa.addEventListener('click', () => {
         modalWa.classList.remove('active');
